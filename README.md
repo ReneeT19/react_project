@@ -1,0 +1,2 @@
+# react_project
+Create a website for a fictional company that sells some sort of products. On this website, a user will be able to browse through products and be able to place items into their shopping cart and purchase them. In order to keep track of the products added to the shopping cart, you can use states or session storage. Make sure to use React Router and split up your project into as many components as you see fit.
