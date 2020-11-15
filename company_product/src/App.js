@@ -1,70 +1,90 @@
 import React, {Component, useState} from 'react';
-// import './App.css';
 import {Route, Switch} from 'react-router-dom';
 import Home from './components/Home';
-import Product from './components/Product';
 import Error from './components/Error';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import About from './components/About';
-import axios from 'axios';
-import { render } from 'react-dom';
-import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
+import FAQ from './components/FAQ'
+import * as BooksAPI from './components/BooksAPI';
+import './App.css';
+import ListBooks from './components/ListBooks';
+import Confirmation from './components/Confirmation';
+import SearchBooks from './components/SearchBooks';
 import 'mdbreact/dist/css/mdb.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
+import {BrowserRouter as Router,Redirect} from 'react-router-dom';
+import { Navbar, Nav, NavItem, Form, FormControl, Button, NavDropdown, MenuItem } from 'react-bootstrap';
 
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      imageURL: '',
-    }
+  state = {
+    mybooks: []
   }
 
-//   const [state, setState] = useState([]);
+  componentDidMount(){
+    BooksAPI.getAll().then((mybooks) => {
+      this.setState({mybooks: mybooks})
+    })
+  }
 
-//   const getApiAxios = (resource, id) => {
-//     axios.get(`https://dog.ceo/api/breeds/image/random`)
-//         .then(response => {
-//             setState(response.data);
-//         })
-// }
+  shelfChange = (book, shelf) => {
+    book.shelf = shelf
+    BooksAPI.update(book, shelf).then(
+      this.setState((prevState, props) => {
+        return {
+          mybooks: prevState.mybooks.map((b) => b.id === book.id ? book : b)
+        }
+      }
+      )
+    )
+  }
 
-// const clearState = () => {
-//   setState([]);
-// }
-componentDidMount() {
-  axios.get('https://dog.ceo/api/breeds/image/random')
-  .then(response => {
-    this.setState({ imageURL: response.data.message });
-  })
-  .catch(error => {
-    console.log(error);
-  });
-}
-
+  addBook = (book, shelf) => {
+    book.shelf = shelf
+    BooksAPI.update(book, shelf).then(
+      this.setState(state => (
+        {mybooks: state.mybooks.concat([ book ])}
+        )
+      )
+    )
+  }
 
 render(){
-  const { imageURL } = this.state;
   
   return (
-<div>
+    <Router>
+<div className="app">
   <Header />
     <main>
         <Switch>
 
             <Route path="/" component={Home} exact >
-              <img src={imageURL} />
             </Route>
-            <Route path="/product" component={Product} ></Route>
-            <Route path="/about" component={About} ></Route>
-            <Route component={Error} ></Route>
-        </Switch>
+            {/* <Route component={Error} ></Route> */}
+
+            <Route path="/about" component={About} ></Route> 
+
+            <Route exact path="/listbooks" render={() => (
+            <ListBooks mybooks={this.state.mybooks} shelfChange={this.shelfChange}/>
+            )} />
+
+            <Route exact path="/search" render={() => (
+            <SearchBooks shelfChange={this.addBook} mybooks={this.state.mybooks}/>
+           )} />
+            
+            <Route exact path="/confirmation" render={() => (
+            <Confirmation mybooks={this.state.mybooks} shelfChange={this.shelfChange}/>
+            )} />
+
+            <Route path="/faq" component={FAQ} ></Route> 
+          </Switch>
+          
     </main>
     <Footer />
 </div>
+</Router>
   );
 }
 }

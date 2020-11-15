@@ -6,7 +6,7 @@ import 'bootstrap-css-only/css/bootstrap.min.css';
 
 const Footer = () => {
   return (
-    <MDBFooter color="cyan" className="font-small darken-3 pt-0">
+    <MDBFooter color="cyan" className="footer-copyright text-center py-3">
 <MDBContainer >
       <a href="#!" className="fb-ic mr-3">
         <MDBIcon fab icon="facebook-f" />

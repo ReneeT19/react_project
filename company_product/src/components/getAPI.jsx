@@ -2,8 +2,10 @@ import React from 'react';
 import axios from 'axios';
 
 const useGetApi = () => {
+
     const getApi = (resource, id) => {
-        return axios.get(`https://dog.ceo/api/breeds/image/random`);
+        
+        return axios.get('https://dog.ceo/api/breeds/image/random/');
     }
     
 
