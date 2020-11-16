@@ -34,7 +34,10 @@ class HoverComp extends React.Component {
   }
   render() {
     return (
-        <div className='container'>
+
+
+        <div className='container; list-books-title'>
+      <h1>Get to Know "Once Upon A BOOK"</h1>
         <Motion {...this.getSpringProps()}>
           {tweenCollection => {
              let styleImage = {

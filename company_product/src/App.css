@@ -291,3 +291,8 @@ html,body {
   background-position: center center;
   background-repeat: no-repeat;
 } */
+.question {
+  color:black;
+  text-decoration: lightcoral;
+  background-color: lightsalmon;
+}
